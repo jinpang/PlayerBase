@@ -49,6 +49,7 @@ public class BaseVideoViewActivity extends AppCompatActivity implements
     private boolean hasStart;
     private RecyclerView mRecycler;
     private SettingAdapter mAdapter;
+    private String url = DataUtils.VIDEO_URL_11;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,13 +73,13 @@ public class BaseVideoViewActivity extends AppCompatActivity implements
         mVideoView.setReceiverGroup(mReceiverGroup);
         mVideoView.setEventHandler(onVideoViewEventHandler);
         mVideoView.setOnPlayerEventListener(this);
-
+//        mVideoView.switchDecoder(App.PLAN_ID_IJK);
 //        mVideoView.setVolume(0f, 0f);
     }
 
     private void initPlay(){
         if(!hasStart){
-            DataSource dataSource = new DataSource(DataUtils.VIDEO_URL_09);
+            DataSource dataSource = new DataSource(url);
             dataSource.setTitle("音乐和艺术如何改变世界");
             mVideoView.setDataSource(dataSource);
             mVideoView.start();
@@ -135,7 +136,7 @@ public class BaseVideoViewActivity extends AppCompatActivity implements
     };
 
     private void replay(){
-        mVideoView.setDataSource(new DataSource(DataUtils.VIDEO_URL_09));
+        mVideoView.setDataSource(new DataSource(url));
         mVideoView.start();
     }
 

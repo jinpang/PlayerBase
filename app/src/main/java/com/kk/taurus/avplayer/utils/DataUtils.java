@@ -21,6 +21,9 @@ public class DataUtils {
     public static final String VIDEO_URL_07 = "http://jiajunhui.cn/video/trailer.mp4";
     public static final String VIDEO_URL_08 = "https://mov.bn.netease.com/open-movie/nos/mp4/2017/12/04/SD3SUEFFQ_hd.mp4";
     public static final String VIDEO_URL_09 = "https://mov.bn.netease.com/open-movie/nos/mp4/2017/05/31/SCKR8V6E9_hd.mp4";
+    public static final String VIDEO_URL_10 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8";
+    public static final String VIDEO_URL_11 = "rtmp://ossrs.net/hzc/chm1a";
+    public static final String VIDEO_URL_12 = "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov";
 
     public static String[] urls = new String[]{
             VIDEO_URL_01,

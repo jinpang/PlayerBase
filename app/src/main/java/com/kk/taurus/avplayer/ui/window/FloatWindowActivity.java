@@ -19,6 +19,7 @@ import com.kk.taurus.avplayer.cover.CloseCover;
 import com.kk.taurus.avplayer.cover.GestureCover;
 import com.kk.taurus.avplayer.play.DataInter;
 import com.kk.taurus.avplayer.play.ReceiverGroupManager;
+import com.kk.taurus.avplayer.utils.DataUtils;
 import com.kk.taurus.avplayer.utils.PUtil;
 import com.kk.taurus.avplayer.utils.WindowPermissionCheck;
 import com.kk.taurus.playerbase.assist.AssistPlay;
@@ -95,7 +96,8 @@ public class FloatWindowActivity extends AppCompatActivity {
         changeMode(false);
 
         DataSource dataSource = new DataSource();
-        dataSource.setData("https://mov.bn.netease.com/open-movie/nos/mp4/2016/01/11/SBC46Q9DV_hd.mp4");
+        //dataSource.setData("https://mov.bn.netease.com/open-movie/nos/mp4/2016/01/11/SBC46Q9DV_hd.mp4");
+        dataSource.setData(DataUtils.VIDEO_URL_11);
         dataSource.setTitle("神奇的珊瑚");
 
         mAssist.setDataSource(dataSource);
@@ -248,10 +250,14 @@ public class FloatWindowActivity extends AppCompatActivity {
         int state = mAssist.getState();
         if(state == IPlayer.STATE_PLAYBACK_COMPLETE)
             return;
-        if(mAssist.isInPlaybackState()){
-            mAssist.pause();
-        }else{
-            mAssist.stop();
+        if (mFloatWindow.isWindowShow()){
+
+        }else {
+            if(mAssist.isInPlaybackState()){
+                mAssist.pause();
+            }else{
+                mAssist.stop();
+            }
         }
     }
 

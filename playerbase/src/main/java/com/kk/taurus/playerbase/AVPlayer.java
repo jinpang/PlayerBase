@@ -16,7 +16,9 @@
 
 package com.kk.taurus.playerbase;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -24,6 +26,10 @@ import com.kk.taurus.playerbase.config.PlayerConfig;
 import com.kk.taurus.playerbase.config.PlayerLoader;
 import com.kk.taurus.playerbase.entity.DataSource;
 import com.kk.taurus.playerbase.entity.DecoderPlan;
+import com.kk.taurus.playerbase.event.BundlePool;
+import com.kk.taurus.playerbase.event.EventKey;
+import com.kk.taurus.playerbase.event.OnErrorEventListener;
+import com.kk.taurus.playerbase.event.OnPlayerEventListener;
 import com.kk.taurus.playerbase.log.PLog;
 import com.kk.taurus.playerbase.player.BaseInternalPlayer;
 import com.kk.taurus.playerbase.event.BundlePool;
@@ -35,6 +41,7 @@ import com.kk.taurus.playerbase.player.IPlayer;
 import com.kk.taurus.playerbase.event.OnErrorEventListener;
 import com.kk.taurus.playerbase.event.OnPlayerEventListener;
 import com.kk.taurus.playerbase.player.TimerCounterProxy;
+import com.kk.taurus.playerbase.provider.IDataProvider;
 import com.kk.taurus.playerbase.record.PlayValueGetter;
 import com.kk.taurus.playerbase.record.RecordProxyPlayer;
 
@@ -433,8 +440,32 @@ public final class AVPlayer implements IPlayer{
     }
 
     private void internalPlayerStart(int msc){
-        if(isPlayerAvailable())
-            mInternalPlayer.start(msc);
+        if(isPlayerAvailable()) {
+            int size = isRTMPData() ? 0 : msc;
+            mInternalPlayer.start(size);
+        }
+    }
+
+    /**
+     * 直播流协议如果是rtmp格式，不支持快进，不支持快速定位
+     * @return
+     */
+    private boolean isRTMPData(){
+        try {
+            String prefix = "rtmp://";
+            if (mDataSource != null){
+                String data = mDataSource.getData();
+                if (!TextUtils.isEmpty(data)){
+                    return data.startsWith(prefix);
+                }else {
+                    Uri uri = mDataSource.getUri();
+                    return uri != null && uri.toString().startsWith(prefix);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private boolean isPlayerAvailable(){
@@ -478,7 +509,7 @@ public final class AVPlayer implements IPlayer{
     @Override
     public void setSpeed(float speed) {
         if(isPlayerAvailable())
-            mInternalPlayer.setSpeed(speed);
+            mInternalPlayer.setSpeed(isRTMPData() ? 0 : speed);
     }
 
     @Override
@@ -552,7 +583,7 @@ public final class AVPlayer implements IPlayer{
     @Override
     public void seekTo(int msc) {
         if(isPlayerAvailable())
-            mInternalPlayer.seekTo(msc);
+            mInternalPlayer.seekTo(isRTMPData() ? 0 : msc);
     }
 
     @Override
